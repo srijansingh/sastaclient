@@ -1,65 +1,68 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import Head from 'next/head';
+import Link from "next/link";
+import CategoryComponent from '../Components/Category/CategoryComponent';
+import styles from "../styles/index.module.css";
+import Layout from "../Layout/index";
+import { API_KEY, BASE_URL } from '../config/baseUrl';
+import ButtonComponent from "../Layout/Button";
 
-export default function Home() {
-  return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+function Home(props) {
+  console.log(props.data)
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+  const next_page_url = props.data.current_page+1;
+  const prev_page_url = props.data.current_page-1;
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
+  const category = props.data.data.map((list,index) => {
+   if(list.child_category_name != null){
+    return (
+      <Link href={"/category?category="+list.child_category_name}>
+        <a>
+          <CategoryComponent key={list.id} category={list.child_category_name} />
         </a>
-      </footer>
-    </div>
+      </Link>
+    )
+   }
+  
+ })
+
+  return (
+    <Layout >
+      
+      <div className={styles.category}>
+            <div className={styles.explore}>
+                
+              <div className={styles.grid}>
+                {category }
+            </div>
+            <hr/>
+              <div className={styles.buttons}>
+                  <ButtonComponent name="Prev" link={prev_page_url}/>
+                  <ButtonComponent name="Next" link={next_page_url} />
+              </div>
+            </div>
+        </div>
+
+    </Layout>
   )
 }
+
+
+
+Home.getInitialProps = async function(context) {
+  let page;
+  if(context.query.page){
+    page = context.query.page;
+  }
+  else{
+    page = 1
+  }
+  const res = await fetch(`${BASE_URL}/list/categories?api_key=${API_KEY}&page=${page}`);
+  const data = await res.json();
+ 
+  return {
+      data
+  }
+}
+
+
+export default Home;

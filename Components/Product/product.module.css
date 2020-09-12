@@ -1,0 +1,161 @@
+
+.flatproduct{
+    display:flex;
+    flex-direction:row;
+    height:180px;
+   overflow:hidden;
+    width:100%;
+   justify-content: space-between;
+    background:white;
+    
+}
+
+.flatimage{
+    
+    width:35%;
+    height:100%;
+    display:flex;
+  
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.flatimage img{
+    max-height:70%;
+    max-width:80%;
+}
+
+.flatdetails{
+   width:100%;
+    display:flex;
+    flex-direction: column;
+    
+    
+}
+.flatdesc{
+    width:65%;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem 0.5rem;
+   
+}
+
+.flattitle{
+    text-transform: capitalize;
+    font-size:1.2rem;
+    font-weight:bold;
+    color:black;
+}
+
+.flatbrand{
+    text-transform: capitalize;
+    font-size:0.9rem;
+    color:#d94711;
+    margin-bottom: 2px;
+
+}
+
+.flatrating{
+    font-size: 1rem;
+    columns: #a6a6a6;
+    margin: 2px; 
+}
+
+.flatprice{
+    width:100%;
+    font-size: 0.85rem;
+    color:orange;
+    font-weight: 450;
+    margin-bottom: 5px;
+}
+
+.flatbest{
+    width:100%;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color:black;
+    padding-right: 0.5rem;
+}
+
+.flatbestbox{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    /* background:red; */
+    /* padding:1rem; */
+    justify-content: space-around;
+    text-align: center;
+}
+
+@media(min-width : 700px){
+    .flatimage{
+    
+        width:30%;
+       
+    
+    }
+    .flatproduct{
+        display:flex;
+        flex-direction:row;
+        height:180px;
+       
+        width:100%;
+       justify-content: space-between;
+        background:white;
+        border-radius:20px;
+    }
+    .flatimage img{
+        height:140px;
+    }
+    .flattitle{
+       
+        font-size:1.3rem;
+        
+    }
+    .flatbrand{
+       
+        font-size:1.2rem;
+        
+    
+    }
+
+    .flatdesc{
+        width:70%;
+        display:flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 1rem 0.5rem;
+       
+    }
+
+    .flatdetails{
+        width:65%;
+         display:flex;
+         flex-direction: column;
+        
+         
+         
+     }
+    .flatbest{
+        width:100%;
+        display:flex;
+        flex-direction: column;
+        justify-content: space-around;
+        color:black;
+        padding-right: 0.5rem;
+    
+    }
+    .flatbestbox{
+        width:35%;
+       display:flex;
+       flex-direction: column;
+       align-items: center;
+     
+       /* padding:1rem; */
+       justify-content: space-around;
+       text-align: center;
+   }
+}
