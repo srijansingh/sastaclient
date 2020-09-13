@@ -5,9 +5,9 @@ import styles from "../styles/index.module.css";
 import Layout from "../Layout/index";
 import { API_KEY, BASE_URL } from '../config/baseUrl';
 import ButtonComponent from "../Layout/Button";
-
+// +"&child="+list.sub_category
 function Home(props) {
-  console.log(props.data)
+ 
 
   const next_page_url = props.data.current_page+1;
   const prev_page_url = props.data.current_page-1;

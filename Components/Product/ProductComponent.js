@@ -18,8 +18,9 @@ class ProductComponent extends Component {
             rating = this.props.rating;
         }
         return (
-            
-                <div  elevation={2} className={styles.flatproduct}>
+                <Link href={'/product?id='+this.props.id}>
+                    <a>
+                    <div  elevation={2} className={styles.flatproduct}>
                     <div className={styles.flatimage}>
                         <img src={this.props.image} alt={this.props.title}/>
                     </div>
@@ -38,6 +39,9 @@ class ProductComponent extends Component {
                         </div>
                         </div>
                 </div>
+                    </a>
+                </Link>
+                
             
         )
     }
