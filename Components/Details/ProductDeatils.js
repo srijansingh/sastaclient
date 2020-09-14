@@ -13,7 +13,7 @@ class ProductDeatils extends Component {
 
         const imageList = this.props.images.map((images, index) => {
             return (
-                <Paper elevation={1} className={styles.small} key={index} onClick={() => this.setState({imageIndex : index})}>
+                <Paper elevation={1} className={this.state.imageIndex === index ? styles.smalls : styles.small} key={index} onMouseEnter={() => this.setState({imageIndex : index})}>
                     <img src={images} />
                 </Paper>
             )
@@ -34,9 +34,6 @@ class ProductDeatils extends Component {
                     <div className={styles.frames}>
                         <img src={this.props.images[this.state.imageIndex]} />
                     </div> 
-                    {/* <Paper elevation={1} className={styles.titles}>
-                            {this.props.title}
-                        </Paper>   */}
                 </div>
                 <div className={styles.description}>
                     <div className={styles.lists}>
@@ -47,7 +44,7 @@ class ProductDeatils extends Component {
                         <div className={styles.rating}>
                             {this.props.rating} <i class="fa fa-star" style={{color:'white'}}></i>
                         </div>
-                        <div className={styles.tag}><i class="fa fa-rupee"></i>{this.props.mrp}</div>
+                        <div className={styles.tag}>{this.props.mrp ? <span><i class="fa fa-rupee"></i>{this.props.mrp} </span>: 'Not Available'}</div>
                     </div>
                    
                     <div className={styles.lists}>
@@ -81,12 +78,21 @@ class ProductDeatils extends Component {
                          </div>
                         
                     </div>
+                    {
+                        this.props.mrp ?
+                        <div className={styles.price}>
+                                <div className={styles.best}>Max Price</div>
+                                    
+                            <div className={styles.tag}><i class="fa fa-rupee"></i>{this.props.mrp}</div>
+                        </div>
 
-                    <div className={styles.price}>
-                        <div className={styles.best}>Max Price</div>
+                        :
+
+                       ''
                             
-                    <div className={styles.tag}><i class="fa fa-rupee"></i>{this.props.mrp}</div>
-                    </div>
+                   
+                    }
+                    
 
                     
 

@@ -9,10 +9,15 @@ import Compare from "../Components/Details/Compare";
 
 
 function Home(props) {
+
+  const router = useRouter()
+  const category_name = router.query.category;
+
+
   console.log(props.data.data.stores)
- const amazon =  props.data.data.stores[0].amazon;
- const flipkart =  props.data.data.stores[1].flipkart;
- const tatacliq  =  props.data.data.stores[11].tatacliq;
+  const amazon =  props.data.data.stores[0].amazon;
+  const flipkart =  props.data.data.stores[1].flipkart;
+  const tatacliq  =  props.data.data.stores[11].tatacliq;
 
 
 
@@ -89,7 +94,7 @@ function Home(props) {
 
   return (
 
-    <Layout >
+    <Layout category={category_name} >
       <div className={styles.container}>
        <div className={styles.box}>
           {productDetail}

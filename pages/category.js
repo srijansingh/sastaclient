@@ -35,16 +35,14 @@ function Home(props) {
               rating={list.product_rating}
               price={list.product_lowest_price}
               sub_category={list.product_sub_category}
+              category_name={category_name}
             />
  })
 
   return (
-    <Layout >
+    <Layout category={category_name} >
       
       <div className={styles.flatbox}>
-                <div style={{color:'#d94711',textAlign:'left'}}>
-                  <h1 style={{color:'#d94711',textAlign:'left',fontFamily:'montserrat-bold'}}>{category_name}</h1>
-                </div>
                 <div className={styles.flatcontainer}>
                     {listing}
                 </div>

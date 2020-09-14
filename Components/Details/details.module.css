@@ -2,13 +2,10 @@
     display:flex;
     flex-direction:row;
     width:100%;
-
-  
 }
 
 .images{
     width:60%;
-   
     display:flex;
     flex-direction: row;
 }
@@ -37,6 +34,25 @@
     border:1px solid #f2f2f2;
     border-radius:20px;
    cursor: pointer;
+}
+
+.smalls{
+    height:100px;
+    width:100px;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background:white;
+    border:1px solid #f2f2f2;
+    border-radius:20px;
+   cursor: pointer;
+    border:1px solid #d94711;
+}
+
+.smalls img{
+    max-height:80%;
+    max-width:80%;
 }
 
 .small img{

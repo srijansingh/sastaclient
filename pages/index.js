@@ -15,11 +15,11 @@ function Home(props) {
   const category = props.data.data.map((list,index) => {
    if(list.child_category_name != null){
     return (
-      <Link href={"/category?category="+list.child_category_name}>
-        <a>
+      // <Link href={"/category?category="+list.child_category_name}>
+      //   <a>
           <CategoryComponent key={list.id} category={list.child_category_name} />
-        </a>
-      </Link>
+      //   </a>
+      // </Link>
     )
    }
   
