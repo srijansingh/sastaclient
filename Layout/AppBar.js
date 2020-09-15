@@ -1,19 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
 import { Button } from '@material-ui/core';
 import {useRouter} from 'next/router';
 
@@ -25,14 +19,12 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
+
 
 
 
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
@@ -40,7 +32,14 @@ import { useTheme } from '@material-ui/core/styles';
 
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import HomeIcon from '@material-ui/icons/Home'
+import { ExitToApp } from '@material-ui/icons';
+
+
+
+function NestedListItemLink(props) {
+  return <ListItem button component="a" {...props} />;
+}
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -189,7 +188,6 @@ export default function Navbar(props) {
   
 
   const [left, setLeft] = useState(false);
-
   const toggleDrawer = (event) => {
     setLeft( event );
   };
@@ -216,6 +214,169 @@ export default function Navbar(props) {
     setModal(false);
     setIsSignup(true)
   }
+
+
+  //Authentication
+  const [email, setEmail] =useState('');
+  const [password, setPassword] =useState('');
+  const [name, setName] = useState('');
+  const [token, setToken] = useState('');
+  const [userId, setUserId] = useState('')
+  const [isAuth, setIsAuth] =useState(false);
+  const [authLoading, setIsAuthLoading] =useState(false);
+  const [error, setError] = useState(false)
+
+useEffect(() => {
+  const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('userId');
+  const name = localStorage.getItem('name');
+  const email = localStorage.getItem('email');
+  const expiryDate = localStorage.getItem('expiryDate')
+
+  if(!token & !userId & !name){
+    setIsAuth(false);
+    return;
+  }
+
+  if (new Date(expiryDate) <= new Date()) {
+    logoutHandler();
+    return;
+  }
+
+  setUserId(userId);
+  setName(name);
+  setEmail(email);
+  setIsAuth(true);
+
+
+
+})
+
+
+const login = () => {
+    
+    setIsAuthLoading(true)
+
+    fetch('https://server.mysastaprice.com/user/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email:email,
+        password: password
+      })
+    })
+      .then(res => {
+        if (res.status === 422) {
+          throw new Error('Validation failed.');
+        }
+        if (res.status !== 200 && res.status !== 201) {
+          console.log('Error!');
+          throw new Error('Could not authenticate you!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        setIsAuth(true);
+        setToken(resData.token);
+        setIsAuthLoading(false);
+        setUserId(resData.userId);
+
+        localStorage.setItem('token', resData.token);
+        localStorage.setItem('userId', resData.userId);
+        localStorage.setItem('email', resData.email);
+        localStorage.setItem('name', resData.name);
+        const remainingMilliseconds = 60 * 60 * 24000;
+        const expiryDate = new Date(
+          new Date().getTime() + remainingMilliseconds
+        );
+        localStorage.setItem('expiryDate', expiryDate.toISOString());
+        setAutoLogout(remainingMilliseconds);
+        setModal(false)
+        setIsSignup(false)
+      })
+      .catch(err => {
+        setError('OOPS! something went wrong')
+        setIsAuth(false);
+        setIsAuthLoading(false);
+      });
+}
+
+
+
+const signup = () => {
+
+  setIsAuthLoading(true)
+
+  fetch('https://server.mysastaprice.com/user/signup', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      email:email,
+      password: password,
+      name:name
+    })
+  })
+    .then(res => {
+      if (res.status === 422) {
+        throw new Error('Validation failed.');
+      }
+      if (res.status !== 200 && res.status !== 201) {
+        console.log('Error!');
+        throw new Error('Could not authenticate you!');
+      }
+      return res.json();
+    })
+    .then(resData => {
+      console.log(resData);
+      setIsAuth(true);
+      setToken(resData.token);
+      setIsAuthLoading(false);
+      setUserId(resData.userId);
+
+      localStorage.setItem('token', resData.token);
+      localStorage.setItem('userId', resData.userId);
+      localStorage.setItem('email', resData.email);
+      localStorage.setItem('name', resData.name);
+      const remainingMilliseconds = 60 * 60 * 24000;
+      const expiryDate = new Date(
+        new Date().getTime() + remainingMilliseconds
+      );
+      localStorage.setItem('expiryDate', expiryDate.toISOString());
+      setAutoLogout(remainingMilliseconds);
+      setModal(false)
+      setIsSignup(false)
+
+    })
+    .catch(err => {
+      console.log(err);
+      setError('OOPS! something went wrong')
+      setIsAuth(false);
+      setIsAuthLoading(false);
+    });
+}
+
+
+const setAutoLogout = milliseconds => {
+  setTimeout(() => {
+    this.logoutHandler();
+  }, milliseconds);
+};
+
+const logoutHandler = () => {
+  setIsAuth(false)
+  setToken('');
+  localStorage.removeItem('token');
+  localStorage.removeItem('expiryDate');
+  localStorage.removeItem('userId');
+  localStorage.removeItem('user');
+  
+};
+
+
 
   return (
     <div>
@@ -266,18 +427,35 @@ export default function Navbar(props) {
       
     </div>
       <Drawer  open={left} onClose={() => toggleDrawer(false)}>
+
             <List className={classes.list}>
               <a href="/">
               <div className={classes.logo}>
                 <img src="/logo.png" height="100px"/>
-                <Typography className={classes.title}>MySastaPrice</Typography>
+            <Typography className={classes.title}>{ isAuth ? name : 'MySastaPrice'}</Typography>
               </div>
               </a>
               <Divider />
-              <ListItem button onClick={handleClickOpen}>
-                <ListItemIcon><AccountCircle style={{color:'#d94711'}}/></ListItemIcon>
-                <ListItemText primary="My Account" />
-              </ListItem> 
+              <NestedListItemLink key="7" className={classes.nested} href="/">
+                  <ListItemIcon>
+                      <HomeIcon style={{color:'#d94711'}}/>
+                      </ListItemIcon>
+                      <ListItemText primary="Home" />
+              </NestedListItemLink>
+              {
+                isAuth ?
+               <ListItem button onClick={logoutHandler}>
+                  <ListItemIcon><ExitToApp style={{color:'#d94711'}}/></ListItemIcon>
+                  <ListItemText primary="Logout" />
+                </ListItem> 
+                :
+                <ListItem button onClick={handleClickOpen}>
+                  <ListItemIcon><AccountCircle style={{color:'#d94711'}}/></ListItemIcon>
+                  <ListItemText primary="My Account" />
+                </ListItem> 
+              }
+
+              
             </List>
       </Drawer>
 
@@ -293,28 +471,40 @@ export default function Navbar(props) {
           <Grid container spacing={1} alignItems="flex-end">
             
             <Grid item>
-              <TextField style={{color:'#d94711'}} id="input-with-icon-grid" label="Email" />
+              <TextField style={{color:'#d94711'}} id="input-with-icon-grid" label="Email" onChange={(event)=> setEmail(event.target.value)} />
             </Grid>
           </Grid>
 
           <Grid container spacing={1} alignItems="flex-end">
            
             <Grid item>
-              <TextField  type="password" id="input-with-icon-grid" label="Password" />
+              <TextField  type="password" id="input-with-icon-grid" label="Password" onChange={(event)=> setPassword(event.target.value)} />
             </Grid>
           </Grid>
         </form>
         
         </DialogContent>
           <div className={classes.button}>
-                <Button onClick={handleClose} variant="contained"  style={{background:'#d94711', color:'white'}} autoFocus>
+
+            {
+              authLoading ? 
+
+              <Button disabled variant="contained"  style={{background:'#d94711', color:'white'}} autoFocus>
                   Login
                 </Button>
+                :
+                <Button onClick={login} variant="contained"  style={{background:'#d94711', color:'white'}} autoFocus>
+                  Login
+                </Button>
+          }     
 
                 <Button onClick={handleOpenSignup}   style={{color:'#d94711'}}>
                   Switch to Signup
                 </Button>
                 
+                {
+                  error ? <Typography style={{color:'red', fontSize:'0.8rem'}}>{error}</Typography> : ''
+                }
           </div>
       </Dialog>
 
@@ -330,40 +520,52 @@ export default function Navbar(props) {
         <Grid container spacing={1} alignItems="flex-end">
             
             <Grid item>
-              <TextField style={{color:'#d94711'}} type="text" id="input-with-icon-grid" label="Enter Name" />
+              <TextField style={{color:'#d94711'}} type="text" id="input-with-icon-grid" label="Enter Name" onChange={(event)=> setName(event.target.value)}/>
             </Grid>
           </Grid>
 
           <Grid container spacing={1} alignItems="flex-end">
             
             <Grid item>
-              <TextField style={{color:'#d94711'}} type="email" id="input-with-icon-grid" label="Enter Email" />
+              <TextField style={{color:'#d94711'}} id="input-with-icon-grid" label="Enter Email" onChange={(event)=> setEmail(event.target.value)} />
             </Grid>
           </Grid>
 
           <Grid container spacing={1} alignItems="flex-end">
            
             <Grid item>
-              <TextField  type="password" id="input-with-icon-grid" label="Enter Password" />
+              <TextField  type="password" id="input-with-icon-grid" label="Enter Password" onChange={(event)=> setPassword(event.target.value)} />
             </Grid>
           </Grid>
         </form>
         
         </DialogContent>
           <div className={classes.button}>
-                <Button onClick={handleClose} variant="contained"  style={{background:'#d94711', color:'white'}} autoFocus>
+
+              {
+                authLoading ? 
+
+                <Button disabled variant="contained"  style={{background:'red', color:'white'}} autoFocus>
                   Signup
                 </Button>
+
+                :
+
+                <Button onClick={signup} variant="contained"  style={{background:'#d94711', color:'white'}} autoFocus>
+                  Signup
+                </Button>
+              }
+               
                 <Button onClick={handleClickOpen} style={{color:'#d94711'}}>
                   Switchto Login
                 </Button>
+
+                {
+                  error ? <Typography style={{color:'red', fontSize:'0.8rem'}}>{error}</Typography> : ''
+                }
           </div>
       </Dialog>
     </div>
-
-
-
-
 
    
   );
