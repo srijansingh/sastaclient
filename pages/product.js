@@ -14,7 +14,6 @@ function Home(props) {
   const category_name = router.query.category;
 
 
-  console.log(props.data.data.stores)
   const amazon =  props.data.data.stores[0].amazon;
   const flipkart =  props.data.data.stores[1].flipkart;
   const tatacliq  =  props.data.data.stores[11].tatacliq;
@@ -91,10 +90,32 @@ function Home(props) {
                             colors={props.data.data.available_colors}
                           />
   
-
+  const url="https://mysastaprice.com/product="+router.query.id;
+  const description ="Product name : "+ props.data.data.product_name + ", Category : " +props.data.data.product_category + ", Model : " +props.data.data.product_model + ", Price : " + props.data.data.product_price + " from Mysastaprice"
   return (
 
     <Layout category={category_name} >
+       <Head>
+          
+          <title>{props.data.data.product_name}</title>
+          <meta name="title" content={props.data.data.product_name} />
+          <meta name="description" content={description} />
+
+         
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content={url} />
+          <meta property="og:title" content={props.data.data.product_name} />
+          <meta property="og:description" content={description} />
+          <meta property="og:image" content={props.data.data.product_images} />
+
+          <meta property="twitter:card" content="summary_large_image" />
+          <meta property="twitter:url" content={url} />
+          <meta property="twitter:title" content={props.data.data.product_name} />
+          <meta property="twitter:description" content={description} />
+          <meta property="twitter:image" content={props.data.data.product_images} />
+
+      </Head>
+
       <div className={styles.container}>
        <div className={styles.box}>
           {productDetail}

@@ -5,20 +5,16 @@ import styles from "../styles/index.module.css";
 import Layout from "../Layout/index";
 import { API_KEY, BASE_URL } from '../config/baseUrl';
 import ButtonComponent from "../Layout/Button";
-// +"&child="+list.sub_category
+
 function Home(props) {
  
-
- console.log(props.data)
 
   const category = props.data.category.map((list,index) => {
    if(list.title != null){
     return (
-      // <Link href={"/category?category="+list.child_category_name}>
-      //   <a>
+      
           <CategoryComponent key={list._id} category={list.title} />
-      //   </a>
-      // </Link>
+      
     )
    }
   
@@ -26,7 +22,26 @@ function Home(props) {
 
   return (
     <Layout >
-      
+      <Head>
+          
+          <title>Mysastaprice : Price Comparison Store</title>
+          <meta name="title" content="Mysastaprice Price Comparison Store" />
+          <meta name="description" content="Compare the prices of mobile, laptop, electronic gadgets and it accessories with multiple e-commerce store." />
+
+         
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://mysastaprice.com/" />
+          <meta property="og:title" content="Mysastaprice Price Comparison Store" />
+          <meta property="og:description" content="Compare the prices of mobile, laptop, electronic gadgets and it accessories with multiple e-commerce store." />
+          <meta property="og:image" content="/logo.png" />
+
+          <meta property="twitter:card" content="summary_large_image" />
+          <meta property="twitter:url" content="https://mysastaprice.com/" />
+          <meta property="twitter:title" content="Mysastaprice Price Comparison Store" />
+          <meta property="twitter:description" content="Compare the prices of mobile, laptop, electronic gadgets and it accessories with multiple e-commerce store." />
+          <meta property="twitter:image" content="/logo.png" />
+
+      </Head>
       <div className={styles.category}>
             <div className={styles.explore}>
                 

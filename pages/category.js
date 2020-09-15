@@ -40,9 +40,30 @@ function Home(props) {
             />
  })
 
+ const url = "https://mysastaprice.com/category="+category_name;
+
   return (
     <Layout category={category_name} >
-      
+       <Head>
+          
+          <title>{category_name}</title>
+          <meta name="title" content={category_name} />
+          <meta name="description" content={"Compare latest product of " + category_name + " category"} />
+
+         
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content={url} />
+          <meta property="og:title" content={category_name} />
+          <meta property="og:description" content={"Compare latest product of " + category_name + " category"} />
+          <meta property="og:image" content="/logo.png" />
+
+          <meta property="twitter:card" content="summary_large_image" />
+          <meta property="twitter:url" content={url} />
+          <meta property="twitter:title" content={category_name} />
+          <meta property="twitter:description" content={"Compare latest product of " + category_name + " category"} />
+          <meta property="twitter:image" content="/logo.png" />
+
+      </Head>
       <div className={styles.flatbox}>
                 <div className={styles.flatcontainer}>
                     {listing}
