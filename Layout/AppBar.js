@@ -18,6 +18,30 @@ import { Button } from '@material-ui/core';
 import {useRouter} from 'next/router';
 
 
+import Drawer from '@material-ui/core/Drawer';
+
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+
+
+
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
+
+
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
+
 const useStyles = makeStyles((theme) => ({
   grow: {
     width:'100%',
@@ -38,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  title: {
+  titles: {
     width:'120px',
     display: 'none',
     [theme.breakpoints.up('sm')]: {
@@ -100,6 +124,41 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
+  list: {
+    width: 250,
+  },
+  fullList: {
+    width: 'auto',
+  },
+  logo:{
+    display:'flex',
+    flexDirection:'column',
+    justifyContent:'space-around',
+    alignItems:'center',
+    height:'150px',
+    marginBottom:'20px'
+  },
+  title:{
+    fontSize:'1.5rem',
+    fontWeight:'bold',
+    color:'#d94711'
+  },
+
+  root: {
+    '& .MuiTextField-root': {
+      margin: theme.spacing(1),
+      width: 220,
+      borderColor:'red',
+      color:'red'
+    }},
+    button:{
+      width:'100%',
+      display:'flex',
+      flexDirection:'column',
+      height:'100px',
+      alignItems:'center',
+      justifyContent:'space-around',
+    }
 }));
 
 
@@ -112,12 +171,8 @@ const preventDefault = f => e => {
 export default function Navbar(props) {
 
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
+  
   const router = useRouter()
    const [query, setQuery] = useState('')
    
@@ -131,29 +186,39 @@ export default function Navbar(props) {
      })
    })
 
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-  const menuId = 'primary-search-account-menu';
   
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  
+
+  const [left, setLeft] = useState(false);
+
+  const toggleDrawer = (event) => {
+    setLeft( event );
+  };
+
+
+
+  const [modal, setModal] = React.useState(false);
+  const [isSignup, setIsSignup] = React.useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const handleClickOpen = () => {
+    setIsSignup(false)
+    setModal(true);
+    setLeft( false );
+  };
+
+  const handleClose = () => {
+    setModal(false);
+    setIsSignup(false)
+  };
+
+  const handleOpenSignup = () => {
+    setModal(false);
+    setIsSignup(true)
+  }
 
   return (
+    <div>
     <div className={classes.grow}>
       <AppBar position="fixed" style={{background:'#d94711', width:'100%'}}>
         <Toolbar className={classes.toolbar}>
@@ -164,11 +229,12 @@ export default function Navbar(props) {
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
+            onClick={() => toggleDrawer(true)}
           >
             <MenuIcon />
           </IconButton>
          <a href="/">
-         <Typography className={classes.title} variant="h6">
+         <Typography className={classes.titles} variant="h6">
             Mysastaprice
           </Typography>
          </a>
@@ -193,21 +259,112 @@ export default function Navbar(props) {
           
          
           <div className={classes.sectionDesktop}>
-            
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+           
           </div>
         </Toolbar>
       </AppBar>
-     
+      
     </div>
+      <Drawer  open={left} onClose={() => toggleDrawer(false)}>
+            <List className={classes.list}>
+              <a href="/">
+              <div className={classes.logo}>
+                <img src="/logo.png" height="100px"/>
+                <Typography className={classes.title}>MySastaPrice</Typography>
+              </div>
+              </a>
+              <Divider />
+              <ListItem button onClick={handleClickOpen}>
+                <ListItemIcon><AccountCircle style={{color:'#d94711'}}/></ListItemIcon>
+                <ListItemText primary="My Account" />
+              </ListItem> 
+            </List>
+      </Drawer>
+
+
+      <Dialog
+        open={modal}
+        onClose={handleClose}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle style={{textAlign:'center'}} id="responsive-dialog-title">{"Login Here"}</DialogTitle>
+        <DialogContent style={{maxWidth:'350px', display:'flex', flexDirection:'column', justifyContent:'space-around',alignItems:'center'}}>
+        <form className={classes.root} noValidate autoComplete="off">
+          <Grid container spacing={1} alignItems="flex-end">
+            
+            <Grid item>
+              <TextField style={{color:'#d94711'}} id="input-with-icon-grid" label="Email" />
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={1} alignItems="flex-end">
+           
+            <Grid item>
+              <TextField  type="password" id="input-with-icon-grid" label="Password" />
+            </Grid>
+          </Grid>
+        </form>
+        
+        </DialogContent>
+          <div className={classes.button}>
+                <Button onClick={handleClose} variant="contained"  style={{background:'#d94711', color:'white'}} autoFocus>
+                  Login
+                </Button>
+
+                <Button onClick={handleOpenSignup}   style={{color:'#d94711'}}>
+                  Switch to Signup
+                </Button>
+                
+          </div>
+      </Dialog>
+
+
+      <Dialog
+        open={isSignup}
+        onClose={handleClose}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle style={{textAlign:'center'}} id="responsive-dialog-title">{"Signup Here"}</DialogTitle>
+        <DialogContent style={{maxWidth:'350px', display:'flex', flexDirection:'column', justifyContent:'space-around',alignItems:'center'}}>
+        <form className={classes.root} noValidate autoComplete="off">
+        <Grid container spacing={1} alignItems="flex-end">
+            
+            <Grid item>
+              <TextField style={{color:'#d94711'}} type="text" id="input-with-icon-grid" label="Enter Name" />
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={1} alignItems="flex-end">
+            
+            <Grid item>
+              <TextField style={{color:'#d94711'}} type="email" id="input-with-icon-grid" label="Enter Email" />
+            </Grid>
+          </Grid>
+
+          <Grid container spacing={1} alignItems="flex-end">
+           
+            <Grid item>
+              <TextField  type="password" id="input-with-icon-grid" label="Enter Password" />
+            </Grid>
+          </Grid>
+        </form>
+        
+        </DialogContent>
+          <div className={classes.button}>
+                <Button onClick={handleClose} variant="contained"  style={{background:'#d94711', color:'white'}} autoFocus>
+                  Signup
+                </Button>
+                <Button onClick={handleClickOpen} style={{color:'#d94711'}}>
+                  Switchto Login
+                </Button>
+          </div>
+      </Dialog>
+    </div>
+
+
+
+
+
+   
   );
 }

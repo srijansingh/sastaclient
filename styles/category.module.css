@@ -19,6 +19,10 @@
     grid-gap: 15px;
 }
 
+.buttons{
+    display:flex;
+    flex-direction: row;grid-gap:20px;
+}
 
 @media(min-width:800px){
     .flatcontainer{

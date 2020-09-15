@@ -25,6 +25,7 @@ function Home(props) {
   const next_page_url = next_num + "&category="+category_name;
   const prev_page_url = prev_num +"&category="+category_name;
 
+  const length = props.data.data.length;
   const listing = props.data.data.map((list,index) => {
 
     return <ProductComponent 
@@ -47,10 +48,17 @@ function Home(props) {
                     {listing}
                 </div>
                 <hr/>
-                <div className={styles.buttons}>
+                {
+                  length >=50 ? 
+
+                  <div className={styles.buttons}>
                     <ButtonComponent name="Prev" link={prev_page_url}/>
                     <ButtonComponent name="Next" link={next_page_url} />
                 </div>
+
+                :
+                ''
+                }
             </div>
 
     </Layout>
