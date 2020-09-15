@@ -91,7 +91,7 @@ function Home(props) {
                           />
   
   const url="https://mysastaprice.com/product?id="+router.query.id;
-  const description ="Product name : "+ props.data.data.product_name + ", Category : " +props.data.data.product_category + ", Model : " +props.data.data.product_model + ", Price : " + props.data.data.product_price + " from Mysastaprice"
+  const description ="Product name : "+ props.data.data.product_name + ", Category : " +props.data.data.product_category + ", Model : " +props.data.data.product_model + ", Price : " + props.data.data.product_mrp + "only from Mysastaprice"
   return (
 
     <Layout category={category_name} >
