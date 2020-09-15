@@ -6,7 +6,7 @@ import ProductComponent from '../Components/Product/ProductComponent';
 import styles from "../styles/product.module.css";
 import ProductDeatils from "../Components/Details/ProductDeatils";
 import Compare from "../Components/Details/Compare";
-
+import Head from "next/head";
 
 function Home(props) {
 
