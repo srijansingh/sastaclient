@@ -106,13 +106,13 @@ function Home(props) {
           <meta property="og:url" content={url} />
           <meta property="og:title" content={props.data.data.product_name} />
           <meta property="og:description" content={description} />
-          <meta property="og:image" content={props.data.data.product_images} />
+          <meta property="og:image" content={props.data.data.product_images[0]} />
 
           <meta property="twitter:card" content="summary_large_image" />
           <meta property="twitter:url" content={url} />
           <meta property="twitter:title" content={props.data.data.product_name} />
           <meta property="twitter:description" content={description} />
-          <meta property="twitter:image" content={props.data.data.product_images} />
+          <meta property="twitter:image" content={props.data.data.product_images[0]} />
 
       </Head>
 
