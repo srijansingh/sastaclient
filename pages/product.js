@@ -90,7 +90,7 @@ function Home(props) {
                             colors={props.data.data.available_colors}
                           />
   
-  const url="https://mysastaprice.com/product="+router.query.id;
+  const url="https://mysastaprice.com/product?id="+router.query.id;
   const description ="Product name : "+ props.data.data.product_name + ", Category : " +props.data.data.product_category + ", Model : " +props.data.data.product_model + ", Price : " + props.data.data.product_price + " from Mysastaprice"
   return (
 
