@@ -30,13 +30,13 @@ function Home(props) {
 
          
           <meta property="og:type" content="website" />
-          <meta property="og:url" content="https://mysastaprice.com/" />
+          <meta property="og:url" content="https://mysastaprice.tk/" />
           <meta property="og:title" content="Mysastaprice Price Comparison Store" />
           <meta property="og:description" content="Compare the prices of mobile, laptop, electronic gadgets and it accessories with multiple e-commerce store." />
           <meta property="og:image" content="/logo.png" />
 
           <meta property="twitter:card" content="summary_large_image" />
-          <meta property="twitter:url" content="https://mysastaprice.com/" />
+          <meta property="twitter:url" content="https://mysastaprice.tk/" />
           <meta property="twitter:title" content="Mysastaprice Price Comparison Store" />
           <meta property="twitter:description" content="Compare the prices of mobile, laptop, electronic gadgets and it accessories with multiple e-commerce store." />
           <meta property="twitter:image" content="/logo.png" />
@@ -59,7 +59,7 @@ function Home(props) {
 
 Home.getInitialProps = async function() {
   
-  const res = await fetch(`https://server.mysastaprice.com/user/category`);
+  const res = await fetch(`https://server.mysastaprice.tk/user/category`);
   const data = await res.json();
  
   return {

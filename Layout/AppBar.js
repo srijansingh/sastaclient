@@ -257,7 +257,7 @@ const login = () => {
     
     setIsAuthLoading(true)
 
-    fetch('https://server.mysastaprice.com/user/login', {
+    fetch('https://server.mysastaprice.tk/user/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -309,7 +309,7 @@ const signup = () => {
 
   setIsAuthLoading(true)
 
-  fetch('https://server.mysastaprice.com/user/signup', {
+  fetch('https://server.mysastaprice.tk/user/signup', {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'

@@ -40,7 +40,7 @@ function Home(props) {
             />
  })
 
- const url = "https://mysastaprice.com/category="+category_name;
+ const url = "https://mysastaprice.tk/category="+category_name;
 
   return (
     <Layout category={category_name} >
